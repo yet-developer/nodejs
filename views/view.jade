@@ -1,0 +1,20 @@
+doctype html
+html
+	include ./includes/head.jade
+	body
+		include ./includes/header.jade
+		div.container
+			div.section<!-- sections -->
+				.row
+					ul.collection
+						each topic in topics
+							li.collection-item
+								a(href="/topic/"+topic)= topic
+			div.section<!-- add new -->
+				.row
+					a.waves-effect.waves-light.btn(href="topic/new") New
+						i.material-icons.left add
+
+
+
+	include ./includes/footer.jade
