@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/yet-developer/nodejs.git"
   },
-  "author": "",
+  "author": "yet-developer",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/yet-developer/nodejs/issues"
