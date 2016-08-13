@@ -16,7 +16,7 @@ html
 							i.material-icons edit
 			.section<!-- sections -->
 				.row
-					form.col.s12(action='/card' method='post')
+					form.col.s12(action='/card' method='post' enctype='multipart/form-data')
 						.row
 							h5 
 								i.material-icons.prefix store
@@ -40,10 +40,11 @@ html
 							h5 
 								i.material-icons card_giftcard
 								| 	쿠폰 정보 
-							.input-field.col.s12.file-field
+							.input-field.file-field
 								.btn.right
 									span File
-									input(type='file', multiple='')
+									input(type='file', name='coupon')
+									i.material-icons.right file_upload
 								.file-path-wrapper
 									input.file-path.validate(type='text', placeholder='스탬프 사진 업로드')
 							.input-field.col.s6

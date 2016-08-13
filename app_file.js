@@ -1,10 +1,23 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
-var path = require('path')
+var multer  = require('multer')
+
+var _storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + '-' + Date.now())
+  }
+})
+
+var upload = multer({ storage: _storage })
 var app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/assets', express.static(__dirname + '/public'));
+app.use('/assets', express.static(__dirname + '/uploads'));
 
 app.use(bodyParser.urlencoded({ extended: true })); // 예제를 그대로 사용
 app.locals.pretty = true;
@@ -17,15 +30,19 @@ app.get('/upload', function(req, res){
 	res.render('new');
 });
 
-app.post('/card', function (req, res) {
+
+app.post('/card',upload.single('coupon'), function (req, res) {
 
 	var id = req.body.id;
 	var json = JSON.stringify(req.body);
+	var file = req.file;
 
 	fs.writeFile('data/'+ id, json, function(err){
 		if (err){
 			res.status(500).send('Internal Server Error');
 		}
+		// res.send('success '+ file);
+		// console.log(file);
 		res.redirect('/card/'+id);
 	});
 
