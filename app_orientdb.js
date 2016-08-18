@@ -3,6 +3,16 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var multer  = require('multer')
 
+var OrientDB = require('orientjs');
+var server = OrientDB({
+  host: 'localhost',
+  port: 2424,
+  username: 'root',
+  password: 'we1rdmeetup'
+});
+
+var db = server.use('weirdmeetup');
+
 var _storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/')
@@ -21,7 +31,7 @@ app.use('/assets', express.static(__dirname + '/uploads'));
 
 app.use(bodyParser.urlencoded({ extended: true })); // 예제를 그대로 사용
 app.locals.pretty = true;
-app.set('views', './views'); // 템플릿은 여기에
+app.set('views', './views_orientDB'); // 템플릿은 여기에
 app.set('view engine', 'jade');
 
 
@@ -48,6 +58,15 @@ app.post('/card',upload.single('coupon'), function (req, res) {
 
 });
 
+app.get(['/coupon', '/coupon/:id'], function(req, res){
+	var sql = 'SELECT FROM coupon';
+	db.query(sql).then(function(results){
+		res.send(results)
+	});
+
+});
+
+/*
 app.get('/card', function(req, res){
 	fs.readdir('data', function(err, files){
 		if (err){
@@ -70,7 +89,7 @@ app.get('/card/:id', function(req, res){
 		res.render('signs', {json: data, title: id});
 	});
 });
-
+*/
 app.listen(8080, function(){
 	console.log('Connected on 8080 port!');
 });
