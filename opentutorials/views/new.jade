@@ -1,0 +1,84 @@
+doctype html
+html
+	include ./includes/head.jade
+	body
+		include ./includes/header.jade
+		.container
+			.fixed-action-btn(style='bottom: 45px; right: 24px;')
+				a.btn-floating.btn-large.red
+					i.large.material-icons add
+				ul
+					li
+						a.btn-floating.red.modal-trigger(href='#modal1')
+							i.material-icons search
+					li
+						a.btn-floating.yellow.darken-1.modal-trigger(href='#modal2')
+							i.material-icons edit
+			.section<!-- sections -->
+				.row
+					form.col.s12(action='/card' method='post' enctype='multipart/form-data')
+						.row
+							h5 
+								i.material-icons.prefix store
+								|	가게 이름 *
+								a.btn-flat.waves-effect.waves-teal.modal-trigger(href='#modal1')
+									| 검색 &nbsp;
+									i.material-icons.right search 
+							.input-field.col.s6
+								input#merchant_name.validate(type='text', name='merchant_name')
+								label 가게 이름
+							.input-field.col.s6
+								input#branch_name.validate(type='tel', name='branch_name')
+								label 지점 이름
+							.input-field.col.s6
+								input#merchant_id.validate(type='text', name='merchant_id')
+								label(for='merchant_id') 점포ID
+							.input-field.col.s6
+								input#branch_id.validate(type='tel', name='branch_id')
+								label(for='branch_id') 지점ID
+						.row
+							h5 
+								i.material-icons card_giftcard
+								| 	쿠폰 정보 
+							.input-field.file-field
+								.btn.right
+									span File
+									input(type='file', name='coupon')
+									i.material-icons.right file_upload
+								.file-path-wrapper
+									input.file-path.validate(type='text', placeholder='스탬프 사진 업로드')
+							.input-field.col.s6
+								input#id.validate(type='text', placeholder='자동생성됨' name='id')
+								label(for='id') 쿠폰 ID *
+							.input-field.col.s6
+								input#price.validate(type='text', name='price')
+								label(for='price') 쿠폰 가격 *
+							.input-field.col.s6
+								input#stamp.validate(type='text', name='stamp')
+								label(for='stamp') 스탬프 *
+							.input-field.col.s6
+								input#max.validate(type='text', name='max')
+								label(for='max') 최대 스탬프 수 *
+							.input-field.col.s4
+								input#input_date.datepicker(type='date', name='input_date' )
+								label.active(for='input_date') 입고일 *
+							.input-field.col.s4
+								input#end_date.datepicker(type='date', name='end_date' )
+								label.active(for='end_date') 만료일
+							.input-field.col.s4
+								label.active(for='global') 글로벌 쿠폰
+								.switch
+									label
+										Off
+										input#global(type='checkbox', name='global')
+										span.lever
+										On
+							.input-field.col.s12
+								i.material-icons.prefix mode_edit
+								textarea#note.materialize-textarea(placeholder='메모할 내용을 추가해주세요')
+								label(for='note') Note
+							.input-field.col.s12
+								button.btn.waves-effect.waves-light(type='submit') Submit
+									i.material-icons.right send
+include ./includes/modal.jade
+include ./includes/footer.jade
