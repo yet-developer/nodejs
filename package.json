@@ -18,11 +18,15 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "fb": "^1.1.1",
+    "feedly-node": "0.0.1",
     "jade": "^1.11.0",
     "multer": "^1.2.0",
-    "pug": "^2.0.0-beta4",
-    "prompt": ">= 0.2.11"
-
+    "node-mysql": "^0.4.2",
+    "passport": "^0.3.2",
+    "passport-feedly": "^0.1.2",
+    "prompt": ">= 0.2.11",
+    "pug": "^2.0.0-beta4"
   },
   "devDependencies": {},
   "description": "node.js를 활용해서 서버를 구축하는 스터디를 해봅니다. 생활코딩 수업을 기준으로 스터디를 하고 토이 프로젝트를 진행합니다."

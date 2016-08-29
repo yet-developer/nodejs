@@ -1,0 +1,45 @@
+doctype html
+html
+	include ./includes/head.jade
+	body
+		include ./includes/header.jade
+		.container
+			.fixed-action-btn(style='bottom: 45px; right: 24px;')
+				a.btn-floating.btn-large.red
+					i.large.material-icons add
+				ul
+					li
+						a.btn-floating.red.modal-trigger(href='#modal1')
+							i.material-icons search
+					li
+						a.btn-floating.yellow.darken-1.modal-trigger(href='#modal2')
+							i.material-icons edit
+			.section<!-- sections -->
+				.row
+					form.col.s12(action='/card' method='post' enctype='multipart/form-data')
+						.row
+							h5 
+								i.material-icons.prefix assignment_ind
+								|	참여 프로젝트 * 
+							.input-field.col.s6
+								input.validate(type='text', name='author')
+								label 글쓴이
+							.input-field.col.s6
+								input#project.validate(type='text', name='project_name')
+								label(for='project') 프로젝트 이름
+						.row
+							h5 
+								i.material-icons note_add
+								| 	글 작성하기 
+							.input-field.col.s12
+								input#title.validate(type='text', name='title')
+								label(for='title') 제목 *
+							.input-field.col.s12
+								i.material-icons.prefix mode_edit
+								textarea#description.materialize-textarea(placeholder='메모할 내용을 추가해주세요', name='description')
+								label(for='description') Note
+							.input-field.col.s12
+								button.btn.waves-effect.waves-light(type='submit') Submit
+									i.material-icons.right send
+include ./includes/modal.jade
+include ./includes/footer.jade
