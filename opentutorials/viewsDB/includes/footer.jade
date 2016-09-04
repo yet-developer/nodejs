@@ -2,7 +2,7 @@ footer.page-footer.orange
   .container
     .row
       .col.l4.s12
-        h5.white-text 비개발자 코딩그룹, 옛뎁(Yet Dev)
+        h5.white-text 비개발자 코딩그룹,Yet Dev
         p.grey-text.text-lighten-4
           | 비 개발자도 코딩을 한다. 코딩은 창의력을 실체화해주기 때문이며 더 큰 이유는 코딩은 내가 이를 통해 얼마나 배울 것이 많은 부족한 존재인가를 느끼게 하여 겸허하게 하고 끊임없이 노력하게 하는 원동력으로 작용하기 때문이다.
       .col.l4.s12
@@ -27,8 +27,28 @@ footer.page-footer.orange
 script(src='http://code.jquery.com/jquery-2.1.0.min.js')
 script(src='/assets/init.js')
 script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.1/isotope.pkgd.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.1.8/imagesloaded.min.js')
 
 // Place this tag in your head or just before your close body tag.
 script(async='', defer='', src='https://buttons.github.io/buttons.js')
 
+// Google Analytics tracking code
 
+script.
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] ||
+        function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'http://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-40374059-5', 'vikicast.com');
+    ga('send', 'pageview');
+    // App으로 페이지 뷰 보내기.
+    ga('create', 'UA-40374059-4', {'name':'universal'});
+    ga('universal.send', 'pageview');

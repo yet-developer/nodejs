@@ -1,95 +1,78 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var fs = require('fs');
-var multer  = require('multer')
-
 var OrientDB = require('orientjs');
 var server = OrientDB({
-  host: 'localhost',
-  port: 2424,
-  username: 'root',
-  password: 'we1rdmeetup'
+	host: 'localhost',
+	port: 2424,
+	username: 'root',
+	password: 'we1rdmeetup'
 });
 
-var db = server.use('weirdmeetup');
-
-var _storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/')
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname + '-' + Date.now())
-  }
-})
-
-var upload = multer({ storage: _storage })
+var db = server.use('o2');
 var app = express();
 
 
 app.use('/assets', express.static(__dirname + '/public'));
 app.use('/assets', express.static(__dirname + '/uploads'));
 
-app.use(bodyParser.urlencoded({ extended: true })); // 예제를 그대로 사용
+app.use(bodyParser.urlencoded({
+	extended: true
+})); // 예제를 그대로 사용
 app.locals.pretty = true;
-app.set('views', './views_orientDB'); // 템플릿은 여기에
+app.set('views', './viewsDB'); // 템플릿은 여기에
 app.set('view engine', 'jade');
 
 
 
-app.get('/card/new', function(req, res){
+app.get('/card/new', function(req, res) {
 	res.render('new');
 });
 
 
-app.post('/card',upload.single('coupon'), function (req, res) {
-
-	var id = req.body.id;
-	var json = JSON.stringify(req.body);
-	var file = req.file;
-
-	fs.writeFile('data/'+ id, json, function(err){
-		if (err){
-			res.status(500).send('Internal Server Error');
-		}
-		// res.send('success '+ file);
-		// console.log(file);
-		res.redirect('/card/'+id);
-	});
-
+app.post('/card/new', function(req, res) {
+	var title = req.body.title;
+	var description = req.body.description;
+	var author = req.body.author;
+	var project = req.body.project;
+	var sql = 'INSERT INTO topic (title, description, author, project) VALUES(:title, :description, :author, :project)';
+	db.query(sql, {
+	 params:{
+	   title:title,
+	   description:description,
+	   author:author,
+		 project:project
+	 }
+	}).then(function(results){
+		console.log(results[0]['@rid']);
+		rid = results[0]['@rid'].cluster + "_" + results[0]['@rid'].position
+		res.redirect('/card/#'+rid);
+ });
 });
 
-app.get(['/coupon', '/coupon/:id'], function(req, res){
-	var sql = 'SELECT FROM coupon';
-	db.query(sql).then(function(results){
-		res.send(results)
-	});
-
-});
-
-/*
-app.get('/card', function(req, res){
-	fs.readdir('data', function(err, files){
-		if (err){
-			res.status(500).send('Internal Server Error');
+app.get(['/card', '/card/:id'], function(req, res) {
+	var sql = 'SELECT FROM topic';
+	db.query(sql).then(function(results) {
+		var id = req.params.id;
+		if (id) {
+			var sql = 'SELECT FROM topic WHERE @rid=:rid';
+			db.query(sql, {
+				params: {
+					rid: id
+				}
+			}).then(function(detail) {
+				res.render('views', {
+					cards: results,
+					card: detail[0]
+				});
+			});
+		} else {
+			res.render('views', {
+				cards: results
+			});
 		}
-		res.render('view', {cards:files});
-	})
-});
-
-
-
-app.get('/card/:id', function(req, res){
-	var id = req.params.id;
-	fs.readFile('data/'+id, 'utf8', function(err, data){
-		if(err){
-			console.log(err);
-			res.status(500).send('Internal Server Error');
-		}
-		// res.send(data);
-		res.render('signs', {json: data, title: id});
 	});
 });
-*/
-app.listen(8080, function(){
+
+app.listen(8080, function() {
 	console.log('Connected on 8080 port!');
 });
