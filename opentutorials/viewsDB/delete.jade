@@ -1,0 +1,20 @@
+doctype html
+html
+	include ./includes/head.jade
+	body
+		//- include ./includes/header.jade
+		.container.valign-wrapper
+			.row
+				.col.s12
+					.card
+						.card-content
+							if card
+								span.card-title.orange-text.truncate=card.title 
+								p '메모를 삭제하시겠습니까?'
+						.card-action
+							- rid = encodeURIComponent(card['@rid'])
+								form(action='/card/'+rid +'/delete' method='post')
+									button.btn-flat.waves-effect.waves-light(type='submit') Delete
+										i.material-icons.right delete_sweep
+
+include ./includes/footer_plain.jade

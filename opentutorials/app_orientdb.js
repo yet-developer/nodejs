@@ -36,21 +36,89 @@ app.post('/card/new', function(req, res) {
 	var project = req.body.project;
 	var sql = 'INSERT INTO topic (title, description, author, project) VALUES(:title, :description, :author, :project)';
 	db.query(sql, {
-	 params:{
-	   title:title,
-	   description:description,
-	   author:author,
-		 project:project
-	 }
-	}).then(function(results){
-		console.log(results[0]['@rid']);
-		rid = results[0]['@rid'].cluster + "_" + results[0]['@rid'].position
-		res.redirect('/card/#'+rid);
- });
+		params: {
+			title: title,
+			description: description,
+			author: author,
+			project: project
+		}
+	}).then(function(results) {
+		// rid = results[0]['@rid'].cluster + "_" + results[0]['@rid'].position
+		var id = encodeURIComponent(results[0]['@rid'])
+		res.redirect('/card/#' + id);
+	});
 });
 
+app.get('/card/:id/edit', function(req, res) {
+	var sql = 'SELECT FROM topic WHERE @rid=:rid';
+	var id = req.params.id;
+	db.query(sql, {
+		params: {
+			rid: id
+		}
+	}).then(function(result) {
+		res.render('edit', {
+			card: result[0]
+		});
+	});
+});
+app.post('/card/:id/edit', function(req, res) {
+	var sql = 'UPDATE topic SET title=:t, description=:d, author=:a, project=:p WHERE @rid=:rid';
+	var rid = req.params.id;
+	var title = req.body.title;
+	var desc = req.body.description;
+	var author = req.body.author;
+	var project = req.body.project;
+	var id = encodeURIComponent(req.params.id);
+
+	db.query(sql, {
+		params: {
+			t: title,
+			d: desc,
+			a: author,
+			rid: rid,
+			p: project
+		}
+	}).then(function(results) {
+		res.redirect('/card/#' + id);
+	});
+});
+
+
+app.post('/card/:id/delete', function(req, res) {
+	var sql = 'DELETE FROM topic WHERE @rid=:rid';
+	var id = req.params.id;
+	db.query(sql, {
+		params: {
+			rid: id
+		}
+	}).then(function(result) {
+		// if (err) {
+			console.log(result);
+		// }else {
+			// console.log('success');
+			res.redirect('/card/');
+		// }
+	});
+});
+
+app.get('/card/:id/delete', function(req, res) {
+	var id = req.params.id;
+	var sql = 'SELECT FROM topic WHERE @rid=:rid';
+	db.query(sql, {
+		params: {
+			rid: id
+		}
+	}).then(function(result) {
+		res.render('delete', {
+			card: result[0]
+		});
+	});
+});
+
+
 app.get(['/card', '/card/:id'], function(req, res) {
-	var sql = 'SELECT FROM topic';
+	var sql = 'SELECT FROM topic LIMIT 20';
 	db.query(sql).then(function(results) {
 		var id = req.params.id;
 		if (id) {
@@ -59,10 +127,10 @@ app.get(['/card', '/card/:id'], function(req, res) {
 				params: {
 					rid: id
 				}
-			}).then(function(detail) {
+			}).then(function(result) {
 				res.render('views', {
 					cards: results,
-					card: detail[0]
+					card: result[0]
 				});
 			});
 		} else {
