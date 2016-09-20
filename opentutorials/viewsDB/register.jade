@@ -1,0 +1,23 @@
+doctype html
+html
+	include ./includes/head.jade
+	body
+		include ./includes/header.jade
+		.container
+			form.col.s12(action='/auth/register' method='post')
+				.input-field.col.s12
+					input#username.validate(type='email' name='username')
+					label(for='username') Email
+				.input-field.col.s12
+					input#password.validate(type='password', name='password')
+					label(for='password') Password
+				.input-field.col.s12
+					input#displayName.validate(type='text' name='displayName')
+					label(for='displayName') display Name
+				.input-field.col.s6
+					button.btn-flat.waves-effect.waves-light(type='submit') submit
+						i.material-icons.right send
+
+
+include ./includes/modal.jade
+include ./includes/footer_plain.jade

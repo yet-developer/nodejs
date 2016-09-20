@@ -1,0 +1,49 @@
+doctype html
+html
+	include ./includes/head.jade
+	body
+		include ./includes/header.jade
+		.row
+			.container
+				h5.center-align Login
+				.row
+					ul.collapsible(data-collapsible='accordion')
+						li
+							div.collapsible-header
+								a.black-text(href='/auth/facebook')
+									i.fa.fa-facebook-official(aria-hidden='true')
+									| Continue with Facebook
+							//- .collapsible-body
+							//- 	p Lorem ipsum dolor sit amet.
+						li
+							.collapsible-header
+								a.black-text(href='/auth/slack')
+									i.fa.fa-slack(aria-hidden='true')
+									| Continue with Slack
+							//- .collapsible-body
+							//- 	p Lorem ipsum dolor sit amet.
+						li
+							.collapsible-header
+								i.material-icons person_add
+								| 회원 로그인
+							.collapsible-body
+								.row
+									form.col.s12(action='/auth/login' method='post')
+										//- .input-field.col.s12
+										//- 	input#displayName.validate(type='text')
+										//- 	label(for='displayName') Display Name
+										.input-field.col.s12
+											input#email.validate(type='email')
+											label(for='email') Email
+										.input-field.col.s12
+											input#password.validate(type='password')
+											label(for='password') Password
+										.input-field.col.s6
+											button.btn-flat.waves-effect.waves-light(type='submit') Login
+												i.material-icons.right send
+										.input-field.col.s6
+											a.btn-flat.waves-effect.waves-light(href='/auth/register') 가입하기
+												i.material-icons.right person_add
+
+
+	include ./includes/footer_plain.jade
